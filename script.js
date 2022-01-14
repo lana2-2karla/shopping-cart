@@ -1,4 +1,4 @@
-function createProductImageElement(imageSource) {
+function createProductImageElement(imageSource) { // oii
   const img = document.createElement('img');
   img.className = 'item__image';
   img.src = imageSource;
