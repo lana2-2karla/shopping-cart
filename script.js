@@ -41,17 +41,18 @@ function createCartItemElement({ sku, name, salePrice }) {
 }
 
 const onStageProducts = async () => {
-  const arrObjtProduts = await fetchProducts().results;
+  const objectProduts = await fetchProducts();
+  const arrObjProdut = objectProduts.results;
   const sectionProducts = document.querySelector('.items');
 
-  arrObjtProduts.forEach((objProdut) => {
-    const { sku: id, name, image } = objProdut;
-    const creatProduct = createProductItemElement({ id, name, image });
+  arrObjProdut.forEach((objProdut) => {
+    const { id: sku, title: name, thumbnail: image } = objProdut;
+    const creatProduct = createProductItemElement({ sku, name, image });
     sectionProducts.appendChild(creatProduct);
   });
 };
 
 window.onload = () => { 
-  //createProductItemElement(); 
-  console.log(onStageProducts()); 
+  // createProductItemElement(); 
+  onStageProducts(); 
 };
