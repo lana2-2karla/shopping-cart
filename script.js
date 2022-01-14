@@ -1,4 +1,4 @@
-function createProductImageElement(imageSource) { // oii
+function createProductImageElement(imageSource) { 
   const img = document.createElement('img');
   img.className = 'item__image';
   img.src = imageSource;
@@ -40,4 +40,18 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
-window.onload = () => { };
+const onStageProducts = async () => {
+  const arrObjtProduts = await fetchProducts().results;
+  const sectionProducts = document.querySelector('.items');
+
+  arrObjtProduts.forEach((objProdut) => {
+    const { sku: id, name, image } = objProdut;
+    const creatProduct = createProductItemElement({ id, name, image });
+    sectionProducts.appendChild(creatProduct);
+  });
+};
+
+window.onload = () => { 
+  //createProductItemElement(); 
+  console.log(onStageProducts()); 
+};
