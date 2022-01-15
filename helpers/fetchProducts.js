@@ -1,10 +1,10 @@
-const fetchProducts = async () => {
+const fetchProducts = async (item) => {
   try {
-    const response = await fetch('https://api.mercadolibre.com/sites/MLB/search?q=computador');
+    const response = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${item}`);
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error(error.message);
+    throw new Error('You must provide an url');
   }
 };
 
