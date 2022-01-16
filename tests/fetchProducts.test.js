@@ -18,9 +18,12 @@ describe('1 - Teste a função fecthProducts', () => {
   it('Teste se o retorno da função fetchProducts com o argumento "computador" é uma estrutura de dados igual ao objeto computadorSearch, que já está importado no arquivo',async () => {
     // computadorSearch é o objetão(data) declarado no mock/search.js
     // Uso toEqual pois comparo dois objetos
-    await expect(fetchProducts('computador')).toEqual('computadorSearch');
+    // const result = ;
+     expect(await fetchProducts('computador')).toEqual(computadorSearch);
   });
   it('Testa se, ao chamar a função fetchProducts sem argumento, retorna um erro com a mensagem: You must provide an url', async () => {
-    await expect(fetchProducts()).toEqual(new Error('You must provide an url'));
+    expect( await fetchProducts()).toEqual(new Error('You must provide an url'));
   });
 });
+/* consulta aos links: https://jestjs.io/pt-BR/docs/expect#tohavebeencalled
+https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/try...catch */

@@ -41,7 +41,8 @@ function createCartItemElement({ sku, name, salePrice }) {
 }
 
 const onStageProducts = async () => {
-  const objectProduts = await fetchProducts();
+  // captura produtos gerais da API
+  const objectProduts = await fetchProducts('computador');
   const arrObjProdut = objectProduts.results;
   const sectionProducts = document.querySelector('.items');
 
@@ -52,7 +53,17 @@ const onStageProducts = async () => {
   });
 };
 
+const onStageCartItens = async () => {
+  // captura objeto específico pelo id 
+  
+  
+
+  const OlCartsItens = document.querySelector('.cart__items');
+  OlCartsItens.appendChild();
+};
+
 window.onload = () => { 
   // createProductItemElement(); 
   onStageProducts(); 
+  onStageCartItens();
 };
