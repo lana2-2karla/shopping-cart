@@ -39,6 +39,24 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
+// -------------------------------------------------------------//
+// addCart e addEventToButton adicionam ao carrinho!!
+const addCart = async (event) => {
+ const itemID = getSkuFromProductItem(event.target.parentElement);
+ const specificItem = await fetchItem(itemID);
+ const OlCartsItens = document.querySelector('.cart__items');
+ const { id: sku, title: name, price: salePrice } = specificItem;
+ const test = createCartItemElement({ sku, name, salePrice });
+  OlCartsItens.appendChild(test);
+};
+const addEventToButton = () => {
+  // captura button
+  const buttons = document.querySelectorAll('.item__add');
+ buttons.forEach((btn) => {
+ btn.addEventListener('click', addCart);
+ });
+};
+// --------------------------------------------------------------//
 
 const onStageProducts = async () => {
   // captura produtos gerais da API
@@ -51,19 +69,10 @@ const onStageProducts = async () => {
     const creatProduct = createProductItemElement({ sku, name, image });
     sectionProducts.appendChild(creatProduct);
   });
-};
-
-const onStageCartItens = async () => {
-  // captura objeto específico pelo id 
-  
-  
-
-  const OlCartsItens = document.querySelector('.cart__items');
-  OlCartsItens.appendChild();
+  addEventToButton();
 };
 
 window.onload = () => { 
-  // createProductItemElement(); 
-  onStageProducts(); 
-  onStageCartItens();
+   // createProductItemElement(); 
+   onStageProducts();
 };
