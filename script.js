@@ -34,7 +34,7 @@ function getSkuFromProductItem(item) {
 function cartItemClickListener(event) {
   event.target.remove();
   // ----- Ao remover o item, fica salvo lo LocalStorage ------- //
-  saveCartItems(cartItems.innerText);
+  saveCartItems(cartItems.innerHTML);
   // ---------- ------------- -------------- ------------- ----- //
 }
 function createCartItemElement({ sku, name, salePrice }) {
@@ -55,7 +55,8 @@ const addCart = async (event) => {
  item.addEventListener('click', cartItemClickListener);
  OlCartsItens.appendChild(item);
  // -------- Ao add o item, salvo no localStorage -------- //
- saveCartItems(cartItems.innerText);
+ console.log(cartItems.innerHTML);
+ saveCartItems(cartItems.innerHTML);
  // ----------  -------   ---------- ------------ //
 };
 const addEventToButton = () => {
@@ -84,14 +85,10 @@ const onStageProducts = async () => {
 // captura os itens já salvos no localStorage e joga ao palco novamente 
 const getLoadCart = () => {
  // split transforma string em array e qubra a linha utilizando \n
-const getFunction = getSavedCartItems().split('\n');
-getFunction.forEach((itemText) => {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = itemText;
-  li.addEventListener('click', cartItemClickListener);
-  cartItems.appendChild(li);
-});
+ // link: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/String/split
+const getFunction = getSavedCartItems();
+cartItems.innerHTML = getFunction;
+cartItems.childNodes.forEach((item) => item.addEventListener('click', cartItemClickListener));
 };
 
 window.onload = () => { 
