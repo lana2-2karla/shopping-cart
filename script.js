@@ -30,12 +30,29 @@ function createProductItemElement({ sku, name, image }) {
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
+// -------------------------------------------------------------- //
+const sectionCart = document.querySelector('.cart');
+const divTotalPrice = createCustomElement('div', 'total-price', 'soma');
+sectionCart.appendChild(divTotalPrice);
+// --------------------------------------------------------------- //
 
+const createSectionPrice = (param) => {
+  let soma = 0;
+  param.forEach((itens) => {
+    const indexInitial = itens.innerText.indexOf('$');
+    const test = itens.innerText.substring(indexInitial + 1);
+    const priceNumber = parseFloat(test);
+    soma += priceNumber;
+  });
+  divTotalPrice.innerText = soma;
+  };
+  
 function cartItemClickListener(event) {
   event.target.remove();
   // ----- Ao remover o item, fica salvo lo LocalStorage ------- //
   saveCartItems(cartItems.innerHTML);
   // ---------- ------------- -------------- ------------- ----- //
+  createSectionPrice(cartItems.childNodes);
 }
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
@@ -44,20 +61,20 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
+
 // -------------------------------------------------------------------------//
 // addCart e addEventToButton adicionam ao carrinho!!                       
 const addCart = async (event) => {
  const itemID = getSkuFromProductItem(event.target.parentElement);
  const specificItem = await fetchItem(itemID);
- const OlCartsItens = cartItems;
  const { id: sku, title: name, price: salePrice } = specificItem;
  const item = createCartItemElement({ sku, name, salePrice });
  item.addEventListener('click', cartItemClickListener);
- OlCartsItens.appendChild(item);
+ cartItems.appendChild(item);
  // -------- Ao add o item, salvo no localStorage -------- //
- console.log(cartItems.innerHTML);
  saveCartItems(cartItems.innerHTML);
  // ----------  -------   ---------- ------------ //
+ createSectionPrice(cartItems.childNodes);
 };
 const addEventToButton = () => {
   // captura button
@@ -84,8 +101,6 @@ const onStageProducts = async () => {
 // ------------------------------------------------------ //
 // captura os itens já salvos no localStorage e joga ao palco novamente 
 const getLoadCart = () => {
- // split transforma string em array e qubra a linha utilizando \n
- // link: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/String/split
 const getFunction = getSavedCartItems();
 cartItems.innerHTML = getFunction;
 cartItems.childNodes.forEach((item) => item.addEventListener('click', cartItemClickListener));
