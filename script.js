@@ -30,11 +30,14 @@ function createProductItemElement({ sku, name, image }) {
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
-// -------------------------------------------------------------- //
+// ----------------------------------------------------------------- //
+// Super participação especial de Aline Oliveira - Turma XP - Tribo B
+// indexOf percorre string e captura índice do $;
+// substring retorna a parte final da string que preciso;
+// parseFloat transforma o valor em um number flutuante
 const sectionCart = document.querySelector('.cart');
 const divTotalPrice = createCustomElement('div', 'total-price', 'soma');
 sectionCart.appendChild(divTotalPrice);
-// --------------------------------------------------------------- //
 
 const createSectionPrice = (param) => {
   let soma = 0;
@@ -46,7 +49,10 @@ const createSectionPrice = (param) => {
   });
   divTotalPrice.innerText = soma;
   };
-  
+  // links: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/parseFloat
+  // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf
+  // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/String/substring
+// --------------------------------------------------------------------- //  
 function cartItemClickListener(event) {
   event.target.remove();
   // ----- Ao remover o item, fica salvo lo LocalStorage ------- //
@@ -105,6 +111,17 @@ const getFunction = getSavedCartItems();
 cartItems.innerHTML = getFunction;
 cartItems.childNodes.forEach((item) => item.addEventListener('click', cartItemClickListener));
 };
+const test = () => {
+ cartItems.innerText = '';
+ saveCartItems(cartItems.innerHTML);
+};
+
+const emptyCart = () => {
+  const btnEmptyCart = document.querySelector('.empty-cart');
+  btnEmptyCart.addEventListener('click', test); 
+};
+  
+emptyCart();
 
 window.onload = () => { 
    // createProductItemElement(); 
