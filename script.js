@@ -36,12 +36,12 @@ function getSkuFromProductItem(item) {
 // substring retorna a parte final da string que preciso;
 // parseFloat transforma o valor em um number flutuante
 const sectionCart = document.querySelector('.cart');
-const divTotalPrice = createCustomElement('div', 'total-price', 'soma');
+const divTotalPrice = createCustomElement('div', 'total-price', '0');
 sectionCart.appendChild(divTotalPrice);
 
-const createSectionPrice = (param) => {
+const updatePrice = () => {
   let soma = 0;
-  param.forEach((itens) => {
+  cartItems.childNodes.forEach((itens) => {
     const indexInitial = itens.innerText.indexOf('$');
     const test = itens.innerText.substring(indexInitial + 1);
     const priceNumber = parseFloat(test);
@@ -58,7 +58,7 @@ function cartItemClickListener(event) {
   // ----- Ao remover o item, fica salvo lo LocalStorage ------- //
   saveCartItems(cartItems.innerHTML);
   // ---------- ------------- -------------- ------------- ----- //
-  createSectionPrice(cartItems.childNodes);
+  updatePrice();
 }
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
@@ -80,7 +80,7 @@ const addCart = async (event) => {
  // -------- Ao add o item, salvo no localStorage -------- //
  saveCartItems(cartItems.innerHTML);
  // ----------  -------   ---------- ------------ //
- createSectionPrice(cartItems.childNodes);
+ updatePrice();
 };
 const addEventToButton = () => {
   // captura button
@@ -89,14 +89,23 @@ const addEventToButton = () => {
  btn.addEventListener('click', addCart);
  });
 };
+const CreateLoading = () => {
+  const itemsList = document.querySelector('.items');
+  const elementLoading = createCustomElement('p', 'loading', 'carregando...');
+  itemsList.appendChild(elementLoading);
+  };
+  
+  const removeLoading = () => {
+  document.querySelector('.loading').remove();
+  };
 // --------------------------------------------------------------------------//
-
 const onStageProducts = async () => {
   // captura produtos gerais da API
+  CreateLoading();
   const objectProduts = await fetchProducts('computador');
   const arrObjProdut = objectProduts.results;
   const sectionProducts = document.querySelector('.items');
-
+  removeLoading();
   arrObjProdut.forEach((objProdut) => {
     const { id: sku, title: name, thumbnail: image } = objProdut;
     const creatProduct = createProductItemElement({ sku, name, image });
@@ -110,18 +119,20 @@ const getLoadCart = () => {
 const getFunction = getSavedCartItems();
 cartItems.innerHTML = getFunction;
 cartItems.childNodes.forEach((item) => item.addEventListener('click', cartItemClickListener));
+updatePrice();
 };
-const test = () => {
+const emptyCart = () => {
  cartItems.innerText = '';
  saveCartItems(cartItems.innerHTML);
+ updatePrice();
 };
 
-const emptyCart = () => {
+const emptyCartBtn = () => {
   const btnEmptyCart = document.querySelector('.empty-cart');
-  btnEmptyCart.addEventListener('click', test); 
+  btnEmptyCart.addEventListener('click', emptyCart); 
 };
   
-emptyCart();
+emptyCartBtn();
 
 window.onload = () => { 
    // createProductItemElement(); 
